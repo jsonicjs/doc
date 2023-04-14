@@ -1,7 +1,2 @@
-type Exit = (exit_code: number) => void;
-type Context = {
-    console: Console;
-    exit: Exit;
-};
+import type { Context } from './jsonic-doc';
 export declare function run(argv: string[], ctx: Context): Promise<void>;
-export {};

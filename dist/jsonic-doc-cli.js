@@ -6,11 +6,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.run = void 0;
 const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
 const jsonic_doc_1 = require("./jsonic-doc");
 run(process.argv, {
     console,
     exit: (code) => process.exit(code),
+    errs: [],
 }).catch((e) => console.error(e));
 async function run(argv, ctx) {
     let args = handle_args(parse_args(argv), ctx);
@@ -18,7 +18,10 @@ async function run(argv, ctx) {
     let jsonicdoc = new jsonic_doc_1.JsonicDoc({
         folder: plugindesc.folder,
         name: plugindesc.name,
-    });
+    }, ctx);
+    handle_errs(ctx);
+    jsonicdoc.genOptionsMD();
+    handle_errs(ctx);
 }
 exports.run = run;
 function resolve_plugindesc(args, ctx) {
@@ -37,29 +40,22 @@ function resolve_plugindesc(args, ctx) {
     }
     return plugindesc;
 }
-function load_file(path) {
-    return fs_1.default.readFileSync(path).toString();
-}
-function save_file(path, text) {
-    return fs_1.default.writeFileSync(path, text);
-}
 function handle_args(args, ctx) {
     // resolve file paths etc
-    handle_errs(args, ctx);
+    handle_errs(ctx);
     if (args.help) {
         help(ctx);
         ctx.exit(0);
     }
     return args;
 }
-function handle_errs(args, ctx) {
-    if (0 < args.errs.length) {
-        args.errs.map((err) => {
+function handle_errs(ctx) {
+    if (0 < ctx.errs.length) {
+        ctx.errs.map((err) => {
             console.log('ERROR: ' + err);
         });
         ctx.exit(1);
     }
-    return args;
 }
 function parse_args(argv) {
     const args = {

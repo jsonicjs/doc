@@ -3,6 +3,7 @@
 import Path from 'path'
 import Fs from 'fs'
 
+import type { Context } from './jsonic-doc'
 import { JsonicDoc } from './jsonic-doc'
 
 type Args = {
@@ -12,16 +13,10 @@ type Args = {
   name: string
 }
 
-type Exit = (exit_code: number) => void
-
-type Context = {
-  console: Console
-  exit: Exit
-}
-
 run(process.argv, {
   console,
   exit: (code: number) => process.exit(code),
+  errs: [],
 }).catch((e) => console.error(e))
 
 export async function run(argv: string[], ctx: Context) {
@@ -29,10 +24,17 @@ export async function run(argv: string[], ctx: Context) {
 
   let plugindesc = resolve_plugindesc(args, ctx)
 
-  let jsonicdoc = new JsonicDoc({
-    folder: plugindesc.folder,
-    name: plugindesc.name,
-  })
+  let jsonicdoc = new JsonicDoc(
+    {
+      folder: plugindesc.folder,
+      name: plugindesc.name,
+    },
+    ctx
+  )
+  handle_errs(ctx)
+
+  jsonicdoc.genOptionsMD()
+  handle_errs(ctx)
 }
 
 function resolve_plugindesc(args: Args, ctx: Context) {
@@ -55,18 +57,10 @@ function resolve_plugindesc(args: Args, ctx: Context) {
   return plugindesc
 }
 
-function load_file(path: string) {
-  return Fs.readFileSync(path).toString()
-}
-
-function save_file(path: string, text: string) {
-  return Fs.writeFileSync(path, text)
-}
-
 function handle_args(args: any, ctx: Context) {
   // resolve file paths etc
 
-  handle_errs(args, ctx)
+  handle_errs(ctx)
 
   if (args.help) {
     help(ctx)
@@ -76,15 +70,13 @@ function handle_args(args: any, ctx: Context) {
   return args
 }
 
-function handle_errs(args: any, ctx: Context): any {
-  if (0 < args.errs.length) {
-    args.errs.map((err: string) => {
+function handle_errs(ctx: Context): any {
+  if (0 < ctx.errs.length) {
+    ctx.errs.map((err: string) => {
       console.log('ERROR: ' + err)
     })
     ctx.exit(1)
   }
-
-  return args
 }
 
 function parse_args(argv: string[]) {
