@@ -1,0 +1,49 @@
+{
+  "name": "@jsonic/doc",
+  "version": "0.0.3",
+  "description": "Jsonic plugin documentation generator.",
+  "main": "dist/jsonic-doc.js",
+  "bin": {
+    "jsonic-doc": "bin/jsonic-doc"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "test-some": "jest -t",
+    "test-watch": "jest --coverage --watchAll",
+    "watch": "tsc -w -d",
+    "build": "tsc -d && cp dist/jsonic-doc.js dist/jsonic-doc.min.js && browserify -o dist/jsonic-doc.min.js -e dist/jsonic-doc.js -s @JsonicDoc -im -i assert -p tinyify",
+    "prettier": "prettier --write --no-semi --single-quote src/*.ts test/*.ts",
+    "clean": "rm -rf node_modules yarn.lock package-lock.json",
+    "reset": "npm run clean && npm i && npm run build && npm test",
+    "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"` && echo TAG: v$REPO_VERSION && git commit -a -m v$REPO_VERSION && git push && git tag v$REPO_VERSION && git push --tags;",
+    "repo-publish": "npm run clean && npm i && npm run repo-publish-quick",
+    "repo-publish-quick": "npm run prettier && npm run build && npm run test && npm run repo-tag && npm publish --access public --registry https://registry.npmjs.org "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjrodger/gubu-doc.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rjrodger/gubu-doc/issues"
+  },
+  "homepage": "https://github.com/rjrodger/gubu-doc#readme",
+  "dependencies": {
+    "gubu-gen": "^0.0.3"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "browserify": "^17.0.0",
+    "es-jest": "^2.1.0",
+    "esbuild": "^0.17.16",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.7",
+    "tinyify": "^4.0.0",
+    "typescript": "^5.0.4"
+  }
+}
