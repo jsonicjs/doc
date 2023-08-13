@@ -50,7 +50,7 @@ class JsonicDoc {
           'No plugin found for name: ' +
             this.spec.name +
             ' in package at: ' +
-            this.spec.folder
+            this.spec.folder,
         )
       }
     } catch (e: any) {

@@ -29,7 +29,7 @@ export async function run(argv: string[], ctx: Context) {
       folder: plugindesc.folder,
       name: plugindesc.name,
     },
-    ctx
+    ctx,
   )
   handle_errs(ctx)
 
