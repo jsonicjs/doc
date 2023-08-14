@@ -1,6 +1,6 @@
 {
   "name": "@jsonic/doc",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Jsonic plugin documentation generator.",
   "main": "dist/jsonic-doc.js",
   "bin": {
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/rjrodger/gubu-doc#readme",
   "dependencies": {
-    "gubu-gen": "^0.0.6"
+    "gubu-gen": "^0.0.7"
   },
   "files": [
     "dist",
