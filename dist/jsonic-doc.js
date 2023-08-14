@@ -14,7 +14,9 @@ class JsonicDoc {
         this.spec = spec;
         try {
             const mod = require(this.spec.folder);
-            this.plugin = mod[this.spec.name];
+            const meta = mod.meta || {};
+            const name = meta.name || this.spec.name;
+            this.plugin = mod[name];
             if (null == this.plugin) {
                 this.plugin =
                     mod[this.spec.name[0].toUpperCase() + this.spec.name.substring(1)];

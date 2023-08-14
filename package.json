@@ -1,6 +1,6 @@
 {
   "name": "@jsonic/doc",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Jsonic plugin documentation generator.",
   "main": "dist/jsonic-doc.js",
   "bin": {

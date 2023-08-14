@@ -38,8 +38,12 @@ class JsonicDoc {
 
     try {
       const mod = require(this.spec.folder)
+      const meta = mod.meta || {}
 
-      this.plugin = mod[this.spec.name]
+      const name = meta.name || this.spec.name
+
+      this.plugin = mod[name]
+
       if (null == this.plugin) {
         this.plugin =
           mod[this.spec.name[0].toUpperCase() + this.spec.name.substring(1)]
