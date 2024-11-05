@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.run = void 0;
+exports.run = run;
 const path_1 = __importDefault(require("path"));
 const jsonic_doc_1 = require("./jsonic-doc");
 run(process.argv, {
@@ -23,7 +23,6 @@ async function run(argv, ctx) {
     jsonicdoc.genOptionsMD();
     handle_errs(ctx);
 }
-exports.run = run;
 function resolve_plugindesc(args, ctx) {
     const plugindesc = {
         folder: '',
